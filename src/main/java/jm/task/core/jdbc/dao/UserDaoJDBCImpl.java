@@ -20,7 +20,7 @@ public class UserDaoJDBCImpl implements UserDao {
     private final static String ADD = "INSERT INTO `users` (name, lastName, age) values(?,?,?)";
     private final static String REMOVE_USER = "DELETE FROM `users` WHERE `id` = ?";
     private final static String SELECT = "SELECT * FROM `users`";
-    private final static String DELETE ="DELETE FROM `users`";
+    private final static String DELETE ="TRUNCATE TABLE `users`";
 
     public UserDaoJDBCImpl() {
 
@@ -31,14 +31,12 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.setAutoCommit(false);
             stm.executeUpdate();
             connection.commit();
-            System.out.println("Таблица создана");
         } catch (SQLException e) {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("Ошибка создания БД" + e.getMessage());
         }
     }
 
@@ -47,14 +45,12 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.setAutoCommit(false);
             stm.executeUpdate();
             connection.commit();
-            System.out.println("Таблица удалена");
         } catch (SQLException e) {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("Ошибка удаления БД" + e.getMessage());
         }
     }
 
@@ -66,17 +62,14 @@ public class UserDaoJDBCImpl implements UserDao {
             stm.setByte(3, age);
             stm.executeUpdate();
             connection.commit();
-            System.out.println("User с именем – " + name + " добавлен в базу данных");
         } catch (SQLException e) {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("Ошибка при добавлении пользователя в таблицу" + e.getMessage());
         }
     }
-    // собираем preparedStatement из частей и отправляем
 
     public void removeUserById(long id) {
         try(PreparedStatement  stm = connection.prepareStatement(REMOVE_USER)) {
@@ -84,14 +77,12 @@ public class UserDaoJDBCImpl implements UserDao {
             stm.setLong(1, id);
             stm.executeUpdate();
             connection.commit();
-            System.out.println("Пользователь удален из БД");
         } catch (SQLException e) {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("Ошибка при удалении юзера из таблицы" + e.getMessage());
         }
     }
 
@@ -112,7 +103,6 @@ public class UserDaoJDBCImpl implements UserDao {
                 users.add(new User(name, lastName, age));
             }
         } catch (SQLException e) {
-            System.out.println("Ошибка получения пользователей из БД" + e.getMessage());
             return null;
         }
         return users;
@@ -123,14 +113,12 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.setAutoCommit(false);
             stm.executeUpdate();
             connection.commit();
-            System.out.println("БД успешно очищена");
         } catch (SQLException e) {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("Ошибка очистки БД" + e.getMessage());
         }
     }
 }
