@@ -10,12 +10,12 @@ public class UserDaoJDBCImpl implements UserDao {
 
     private static final Connection connection = Util.getConnection();
 
-    private final static String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `users` (\n" +
-            "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
-            "  `name` VARCHAR(45) NULL,\n" +
-            "  `lastName` VARCHAR(45) NULL,\n" +
-            "  `age` INT NULL,\n" +
-            "        PRIMARY KEY (`id`))";
+    private final static String CREATE_TABLE = new StringBuilder().append("CREATE TABLE IF NOT EXISTS `users` (\n")
+            .append("  `id` INT NOT NULL AUTO_INCREMENT,\n")
+            .append("  `name` VARCHAR(45) NULL,\n")
+            .append("  `lastName` VARCHAR(45) NULL,\n")
+            .append("  `age` INT NULL,\n")
+            .append("        PRIMARY KEY (`id`))").toString();
     private final static String DROP = "DROP TABLE IF EXISTS `users`";
     private final static String ADD = "INSERT INTO `users` (name, lastName, age) values(?,?,?)";
     private final static String REMOVE_USER = "DELETE FROM `users` WHERE `id` = ?";
